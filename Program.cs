@@ -4,12 +4,32 @@ namespace BattleFields
 {
     class BattleField
     {
+        public const string ExplodedSign = " X ";
         public static int fieldSize = 0;
         public int detonatedMines = 0;
         public string[,] pozicii = new string[fieldSize, fieldSize];
 
         public BattleField()
         {
+        }
+
+        private bool CheckCoord(int coord)
+        {
+            bool result = false;
+            if (coord >= 0 && coord < fieldSize)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        private void Explode(int XCoord, int YCoord)
+        {
+            if (CheckCoord(XCoord) && CheckCoord(YCoord))
+            {
+                this.pozicii[XCoord, YCoord] = ExplodedSign;
+            }
         }
 
         public void InitField()
@@ -93,93 +113,56 @@ namespace BattleFields
 
         public void DetonateMine(int XCoord, int YCoord, byte power)
         {
-            if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-                this.pozicii[XCoord - 1, YCoord - 1] = " X ";
-            if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-                this.pozicii[XCoord - 1, YCoord + 1] = " X ";
-            if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-                this.pozicii[XCoord + 1, YCoord - 1] = " X ";
-            if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-                this.pozicii[XCoord + 1, YCoord + 1] = " X ";
-            if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-                this.pozicii[XCoord, YCoord] = " X ";
-
+            // Explode mine with power 1
+            Explode(XCoord, YCoord);
+            Explode(XCoord - 1, YCoord - 1);
+            Explode(XCoord - 1, YCoord + 1);
+            Explode(XCoord + 1, YCoord - 1);
+            Explode(XCoord + 1, YCoord + 1);
             if (power == 1)
             {
                 return;
             }
 
-            if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-                this.pozicii[XCoord, YCoord - 1] = " X ";
-
-            if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-                this.pozicii[XCoord - 1, YCoord] = " X ";
-
-            if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-                this.pozicii[XCoord + 1, YCoord] = " X ";
-
-            if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-                this.pozicii[XCoord, YCoord + 1] = " X ";
-
+            // Explode mine with power 2... (1 + 2)
+            Explode(XCoord, YCoord - 1);
+            Explode(XCoord - 1, YCoord);
+            Explode(XCoord + 1, YCoord);
+            Explode(XCoord, YCoord + 1);
             if (power == 2)
             {
                 return;
             }
 
-            if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-                this.pozicii[XCoord - 2, YCoord] = " X ";
-         
-            if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-                this.pozicii[XCoord + 2, YCoord] = " X ";
-
-            if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-                this.pozicii[XCoord, YCoord - 2] = " X ";
-                      
-            if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-                this.pozicii[XCoord, YCoord + 2] = " X ";
-
+            // Explode mine with power 3... (1 + 2 + 3)
+            Explode(XCoord - 2, YCoord);
+            Explode(XCoord + 2, YCoord);
+            Explode(XCoord, YCoord - 2);
+            Explode(XCoord, YCoord + 2);
             if (power == 3)
             {
                 return;
             }
 
-            if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-                this.pozicii[XCoord - 1, YCoord + 2] = " X ";
-            
-            if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-                this.pozicii[XCoord + 1, YCoord + 2] = " X ";
-
-            if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-                this.pozicii[XCoord - 1, YCoord - 2] = " X ";
-           
-            if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-                this.pozicii[XCoord + 1, YCoord - 2] = " X ";
-
-            if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-                this.pozicii[XCoord - 2, YCoord - 1] = " X ";
-            
-            if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-                this.pozicii[XCoord - 2, YCoord + 1] = " X ";
-
-            if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-                this.pozicii[XCoord + 2, YCoord - 1] = " X ";
-            
-            if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-                this.pozicii[XCoord + 2, YCoord + 1] = " X ";
-
+            // Explode mine with power 4... (1 + 2 + 3 + 4)
+            Explode(XCoord - 1, YCoord + 2);
+            Explode(XCoord + 1, YCoord + 2);
+            Explode(XCoord - 1, YCoord - 2);
+            Explode(XCoord + 1, YCoord - 2);
+            Explode(XCoord - 2, YCoord -1);
+            Explode(XCoord - 2, YCoord + 1);
+            Explode(XCoord + 2, YCoord - 1);
+            Explode(XCoord + 2, YCoord + 1);
             if (power == 4)
             {
                 return;
             }
 
-            if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-                this.pozicii[XCoord - 2, YCoord - 2] = " X ";
-            if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-                this.pozicii[XCoord + 2, YCoord - 2] = " X ";
-            if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-                this.pozicii[XCoord - 2, YCoord + 2] = " X ";
-            if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-                this.pozicii[XCoord + 2, YCoord + 2] = " X ";
+            // Explode mine with power 5... (1 + 2 + 3 + 4 + 5)
+            Explode(XCoord - 2, YCoord - 2);
+            Explode(XCoord + 2, YCoord - 2);
+            Explode(XCoord - 2, YCoord + 2);
+            Explode(XCoord + 2, YCoord + 2);
         }
 
         //tuka se izbira kva bomba da grymne
@@ -213,7 +196,7 @@ namespace BattleFields
             {
                 for (int j = 0; i < fieldSize; i++)
                 {
-                    if ((this.pozicii[i, j] != " X ") && (this.pozicii[i, j] != " - "))
+                    if ((this.pozicii[i, j] != ExplodedSign) && (this.pozicii[i, j] != " - "))
                         count++;
                 }
             }
@@ -221,7 +204,7 @@ namespace BattleFields
             return count;
         }
 
-        public static void Main(string[] args)
+        public static void Main()
         {
             string tempFieldSize;
             Console.WriteLine("Welcome to the Battle Field game");
