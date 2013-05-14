@@ -50,12 +50,17 @@
             {
                 // left side numbers
                 Console.Write(i.ToString() + "|");
-                for (int j = 0; j < fieldSize; j++)
+                
+				for (int j = 0; j < fieldSize; j++)
                 {
                     Console.Write(" " + this.positions[i, j].ToString());
                 }
 
-                Console.WriteLine(string.Empty); Console.WriteLine(string.Empty); Console.WriteLine(string.Empty);
+				for (int k = 0; k < 3; k++)
+				{
+					Console.WriteLine(string.Empty);
+				}
+
             }
         }
 
