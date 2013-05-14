@@ -7,7 +7,7 @@
         public const string ExplodedSign = " X ";
         public static int fieldSize = 0;
         public int detonatedMines = 0;
-        public string[,] pozicii = new string[fieldSize, fieldSize];
+        public string[,] positions = new string[fieldSize, fieldSize];
 
         public BattleField()
         {
@@ -19,7 +19,7 @@
             {
                 for (int j = 0; j < fieldSize; j++)
                 {
-                    this.pozicii[i, j] = " - ";
+                    this.positions[i, j] = " - ";
                 }
             }
         }
@@ -52,7 +52,7 @@
                 Console.Write(i.ToString() + "|");
                 for (int j = 0; j < fieldSize; j++)
                 {
-                    Console.Write(" " + this.pozicii[i, j].ToString());
+                    Console.Write(" " + this.positions[i, j].ToString());
                 }
 
                 Console.WriteLine(string.Empty); Console.WriteLine(string.Empty); Console.WriteLine(string.Empty);
@@ -70,8 +70,7 @@
             Random rnd = new Random();
 
             int minesCount = Convert.ToInt32(rnd.Next(minesDownLimit, minesUpperLimit));
-            int[,] minesPositions =
-                new int[minesCount, minesCount];
+            int[,] minesPositions = new int[minesCount, minesCount];
             Console.WriteLine("mines count is: " + minesCount);
 
             for (int i = 0; i < minesCount; i++)
@@ -84,9 +83,9 @@
                         Convert.ToInt32(rnd.Next(0, fieldSize - 1));
                     tempMineYCoordinate =
                         Convert.ToInt32(rnd.Next(0, fieldSize - 1));
-                    if (this.pozicii[tempMineXCoordinate, tempMineYCoordinate] == " - ")
+                    if (this.positions[tempMineXCoordinate, tempMineYCoordinate] == " - ")
                     {
-                        this.pozicii[tempMineXCoordinate, tempMineYCoordinate] =
+                        this.positions[tempMineXCoordinate, tempMineYCoordinate] =
                                                                                 " " + Convert.ToString(rnd.Next(1, 6) + " ");
                     }
                     else
@@ -107,7 +106,7 @@
         public void DetonateMine(int positionByX, int positionByY)
         {
             // Take power of mine
-            byte power = Convert.ToByte(this.pozicii[positionByX, positionByY]);
+            byte power = Convert.ToByte(this.positions[positionByX, positionByY]);
 
             // Explode mine with power 1
             Explode(positionByX, positionByY);
@@ -115,6 +114,7 @@
             Explode(positionByX - 1, positionByY + 1);
             Explode(positionByX + 1, positionByY - 1);
             Explode(positionByX + 1, positionByY + 1);
+
             if (power == 1)
             {
                 return;
@@ -125,6 +125,7 @@
             Explode(positionByX - 1, positionByY);
             Explode(positionByX + 1, positionByY);
             Explode(positionByX, positionByY + 1);
+
             if (power == 2)
             {
                 return;
@@ -135,6 +136,7 @@
             Explode(positionByX + 2, positionByY);
             Explode(positionByX, positionByY - 2);
             Explode(positionByX, positionByY + 2);
+
             if (power == 3)
             {
                 return;
@@ -149,6 +151,7 @@
             Explode(positionByX - 2, positionByY + 1);
             Explode(positionByX + 2, positionByY - 1);
             Explode(positionByX + 2, positionByY + 1);
+
             if (power == 4)
             {
                 return;
@@ -169,7 +172,7 @@
             {
                 for (int j = 0; i < fieldSize; i++)
                 {
-                    if ((this.pozicii[i, j] != ExplodedSign) && (this.pozicii[i, j] != " - "))
+                    if ((this.positions[i, j] != ExplodedSign) && (this.positions[i, j] != " - "))
                     {
                         count++;
                     }
@@ -204,7 +207,7 @@
         {
             if (CheckCoord(positionByX) && CheckCoord(positionByY))
             {
-                this.pozicii[positionByX, positionByY] = ExplodedSign;
+                this.positions[positionByX, positionByY] = ExplodedSign;
             }
         }
 
@@ -219,10 +222,10 @@
             }
             while ((!Int32.TryParse(tempFieldSize, out fieldSize)) || (fieldSize < 0) || (fieldSize > 11));
 
-            BattleField bf = new BattleField();
-            bf.InitField();
-            bf.InitMines();
-            bf.DisplayField();
+            BattleField gameField = new BattleField();
+            gameField.InitField();
+            gameField.InitMines();
+            gameField.DisplayField();
 
             string coordinates;
             int positionByX, positionByY;
@@ -236,20 +239,20 @@
                     positionByX = Convert.ToInt32(coordinates.Substring(0, 1));
                     positionByY = Convert.ToInt32(coordinates.Substring(2));
 
-                    if ((positionByX < 0) || (positionByY > fieldSize - 1) || (bf.pozicii[positionByX, positionByY] == " - "))
+                    if ((positionByX < 0) || (positionByY > fieldSize - 1) || (gameField.positions[positionByX, positionByY] == " - "))
                     {
                         Console.WriteLine("Invalid Move");
                     }
                 }
-                while ((positionByX < 0) || (positionByY > fieldSize - 1) || (bf.pozicii[positionByX, positionByY] == " - "));
+                while ((positionByX < 0) || (positionByY > fieldSize - 1) || (gameField.positions[positionByX, positionByY] == " - "));
 
-                bf.DetonateMine(positionByX, positionByY);
-                bf.DisplayField();
-                bf.detonatedMines++;
+                gameField.DetonateMine(positionByX, positionByY);
+                gameField.DisplayField();
+                gameField.detonatedMines++;
             }
-            while (bf.PrebroiOstavashtiteMinichki() != 0);
+            while (gameField.PrebroiOstavashtiteMinichki() != 0);
 
-            Console.WriteLine("Game Over. Detonated Mines: " + bf.detonatedMines);
+            Console.WriteLine("Game Over. Detonated Mines: " + gameField.detonatedMines);
             Console.ReadKey();
         }
     }
