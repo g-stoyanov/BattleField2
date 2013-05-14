@@ -102,63 +102,63 @@
         /// Detonates the mine.
         /// Method for detonate selected field with corresponding mine power.
         /// </summary>
-        /// <param name="XCoord">The X coordinate of mine field.</param>
-        /// <param name="YCoord">The Y coordinate of mine field.</param>
-        public void DetonateMine(int XCoord, int YCoord)
+        /// <param name="positionByX">The X coordinate of mine field.</param>
+        /// <param name="positionByY">The Y coordinate of mine field.</param>
+        public void DetonateMine(int positionByX, int positionByY)
         {
             // Take power of mine
-            byte power = Convert.ToByte(this.pozicii[XCoord, YCoord]);
+            byte power = Convert.ToByte(this.pozicii[positionByX, positionByY]);
 
             // Explode mine with power 1
-            Explode(XCoord, YCoord);
-            Explode(XCoord - 1, YCoord - 1);
-            Explode(XCoord - 1, YCoord + 1);
-            Explode(XCoord + 1, YCoord - 1);
-            Explode(XCoord + 1, YCoord + 1);
+            Explode(positionByX, positionByY);
+            Explode(positionByX - 1, positionByY - 1);
+            Explode(positionByX - 1, positionByY + 1);
+            Explode(positionByX + 1, positionByY - 1);
+            Explode(positionByX + 1, positionByY + 1);
             if (power == 1)
             {
                 return;
             }
 
             // Explode mine with power 2... (1 + 2)
-            Explode(XCoord, YCoord - 1);
-            Explode(XCoord - 1, YCoord);
-            Explode(XCoord + 1, YCoord);
-            Explode(XCoord, YCoord + 1);
+            Explode(positionByX, positionByY - 1);
+            Explode(positionByX - 1, positionByY);
+            Explode(positionByX + 1, positionByY);
+            Explode(positionByX, positionByY + 1);
             if (power == 2)
             {
                 return;
             }
 
             // Explode mine with power 3... (1 + 2 + 3)
-            Explode(XCoord - 2, YCoord);
-            Explode(XCoord + 2, YCoord);
-            Explode(XCoord, YCoord - 2);
-            Explode(XCoord, YCoord + 2);
+            Explode(positionByX - 2, positionByY);
+            Explode(positionByX + 2, positionByY);
+            Explode(positionByX, positionByY - 2);
+            Explode(positionByX, positionByY + 2);
             if (power == 3)
             {
                 return;
             }
 
             // Explode mine with power 4... (1 + 2 + 3 + 4)
-            Explode(XCoord - 1, YCoord + 2);
-            Explode(XCoord + 1, YCoord + 2);
-            Explode(XCoord - 1, YCoord - 2);
-            Explode(XCoord + 1, YCoord - 2);
-            Explode(XCoord - 2, YCoord - 1);
-            Explode(XCoord - 2, YCoord + 1);
-            Explode(XCoord + 2, YCoord - 1);
-            Explode(XCoord + 2, YCoord + 1);
+            Explode(positionByX - 1, positionByY + 2);
+            Explode(positionByX + 1, positionByY + 2);
+            Explode(positionByX - 1, positionByY - 2);
+            Explode(positionByX + 1, positionByY - 2);
+            Explode(positionByX - 2, positionByY - 1);
+            Explode(positionByX - 2, positionByY + 1);
+            Explode(positionByX + 2, positionByY - 1);
+            Explode(positionByX + 2, positionByY + 1);
             if (power == 4)
             {
                 return;
             }
 
             // Explode mine with power 5... (1 + 2 + 3 + 4 + 5)
-            Explode(XCoord - 2, YCoord - 2);
-            Explode(XCoord + 2, YCoord - 2);
-            Explode(XCoord - 2, YCoord + 2);
-            Explode(XCoord + 2, YCoord + 2);
+            Explode(positionByX - 2, positionByY - 2);
+            Explode(positionByX + 2, positionByY - 2);
+            Explode(positionByX - 2, positionByY + 2);
+            Explode(positionByX + 2, positionByY + 2);
         }
 
         public int PrebroiOstavashtiteMinichki()
@@ -182,12 +182,12 @@
         /// <summary>
         /// Checks whether the coordinate is within the field of play.
         /// </summary>
-        /// <param name="coord">The coordinate.</param>
+        /// <param name="coordinate">The coordinate.</param>
         /// <returns>Returns a boolean value as a result of the check.</returns>
-        private bool CheckCoord(int coord)
+        private bool CheckCoord(int coordinate)
         {
             bool result = false;
-            if (coord >= 0 && coord < fieldSize)
+            if (coordinate >= 0 && coordinate < fieldSize)
             {
                 result = true;
             }
@@ -198,13 +198,13 @@
         /// <summary>
         /// Explodes the specified cell with given coordinates.
         /// </summary>
-        /// <param name="XCoord">The X coordinate of the cell.</param>
-        /// <param name="YCoord">The Y coordinate of the cell.</param>
-        private void Explode(int XCoord, int YCoord)
+        /// <param name="positionByX">The X coordinate of the cell.</param>
+        /// <param name="positionByY">The Y coordinate of the cell.</param>
+        private void Explode(int positionByX, int positionByY)
         {
-            if (CheckCoord(XCoord) && CheckCoord(YCoord))
+            if (CheckCoord(positionByX) && CheckCoord(positionByY))
             {
-                this.pozicii[XCoord, YCoord] = ExplodedSign;
+                this.pozicii[positionByX, positionByY] = ExplodedSign;
             }
         }
 
@@ -225,7 +225,7 @@
             bf.DisplayField();
 
             string coordinates;
-            int XCoord, YCoord;
+            int positionByX, positionByY;
 
             do
             {
@@ -233,17 +233,17 @@
                 {
                     Console.Write("Enter coordinates: ");
                     coordinates = Console.ReadLine();
-                    XCoord = Convert.ToInt32(coordinates.Substring(0, 1));
-                    YCoord = Convert.ToInt32(coordinates.Substring(2));
+                    positionByX = Convert.ToInt32(coordinates.Substring(0, 1));
+                    positionByY = Convert.ToInt32(coordinates.Substring(2));
 
-                    if ((XCoord < 0) || (YCoord > fieldSize - 1) || (bf.pozicii[XCoord, YCoord] == " - "))
+                    if ((positionByX < 0) || (positionByY > fieldSize - 1) || (bf.pozicii[positionByX, positionByY] == " - "))
                     {
                         Console.WriteLine("Invalid Move");
                     }
                 }
-                while ((XCoord < 0) || (YCoord > fieldSize - 1) || (bf.pozicii[XCoord, YCoord] == " - "));
+                while ((positionByX < 0) || (positionByY > fieldSize - 1) || (bf.pozicii[positionByX, positionByY] == " - "));
 
-                bf.DetonateMine(XCoord, YCoord);
+                bf.DetonateMine(positionByX, positionByY);
                 bf.DisplayField();
                 bf.detonatedMines++;
             }
