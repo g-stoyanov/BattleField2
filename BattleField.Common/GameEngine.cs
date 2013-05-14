@@ -1,78 +1,42 @@
-﻿namespace ExplodingMines
+﻿namespace BattleField.Common
 {
     using System;
     using System.Linq;
 
-    class GameField
+    class GameEngine
     {
-        private static int fieldSize = 0;
-        private int detonatedMines = 0;
-        private readonly FieldCell[,] positions = new FieldCell[fieldSize, fieldSize];
+        private byte detonatedMines;
+        private GameField gameField;
 
-        public void InitField()
+        public void InitializeMines()
         {
-            for (int i = 0; i < fieldSize; i++)
-            {
-                for (int j = 0; j < fieldSize; j++)
-                {
-                    this.positions[i, j] = new FieldCell();
-                }
-            }
-        }
+            // The number mines should be between 15% and 30% of the cells in the battle field
+            int numberOfCells = this.gameField.FieldSize * this.gameField.FieldSize;
+            int minesDownLimit = Convert.ToInt32(0.15 * numberOfCells);
+            int minesUpperLimit = Convert.ToInt32(0.30 * numberOfCells);
+            Random randomNumberGenerator = new Random();
+            int minesCount = randomNumberGenerator.Next(minesDownLimit, minesUpperLimit);
 
-        public void InitMines()
-        {
-            // tuka ne sym siguren kakvo tochno pravq ama pyk raboti
-            int minesDownLimit = Convert.ToInt32(0.15 * fieldSize * fieldSize);
-            int minesUpperLimit = Convert.ToInt32(0.30 * fieldSize * fieldSize);
+            bool mineNotPlaced = true;
             int tempMineXCoordinate;
             int tempMineYCoordinate;
-            bool flag = true;
-            Random rnd = new Random();
-
-            int minesCount = Convert.ToInt32(rnd.Next(minesDownLimit, minesUpperLimit));
-            int[,] minesPositions = new int[minesCount, minesCount];
-            Console.WriteLine("mines count is: " + minesCount);
-
             for (int i = 0; i < minesCount; i++)
             {
                 do
                 {
-                    // tuka cikyla se vyrti dokato flag ne e false
-                    // s do-while raboti po dobre
-                    tempMineXCoordinate =
-                        Convert.ToInt32(rnd.Next(0, fieldSize - 1));
-                    tempMineYCoordinate =
-                        Convert.ToInt32(rnd.Next(0, fieldSize - 1));
-                    if (!this.positions[tempMineXCoordinate, tempMineYCoordinate].IsMine)
+                    tempMineXCoordinate = randomNumberGenerator.Next(0, this.gameField.FieldSize - 1);
+                    tempMineYCoordinate = randomNumberGenerator.Next(0, this.gameField.FieldSize - 1);
+                    if (!this.gameField[tempMineXCoordinate, tempMineYCoordinate].IsMine)
                     {
-                        this.positions[tempMineXCoordinate, tempMineYCoordinate].Power = (byte)rnd.Next(1, 6);
+                        this.gameField[tempMineXCoordinate, tempMineYCoordinate].Power = (byte)randomNumberGenerator.Next(1, 6);
                     }
                     else
                     {
-                        flag = false;
+                        mineNotPlaced = false;
                     }
                 }
-                while (flag);
+                while (mineNotPlaced);
             }
-        }
-
-        public int CountRemainingMines()
-        {
-            int count = 0;
-
-            for (int row = 0; row < fieldSize; row++)
-            {
-                for (int column = 0; column < fieldSize; column++)
-                {
-                    if ((!this.positions[row, column].IsExploded) && (this.positions[row, column].IsMine))
-                    {
-                        count++;
-                    }
-                }
-            }
-
-            return count;
         }
 
         /// <summary>
@@ -81,10 +45,15 @@
         /// </summary>
         /// <param name="positionByX">The X coordinate of mine field.</param>
         /// <param name="positionByY">The Y coordinate of mine field.</param>
-        public void DetonateMine(int positionByX, int positionByY)
+        public bool DetonateMine(int positionByX, int positionByY)
         {
+            if (this.CheckCoord(positionByX) && this.CheckCoord(positionByY) && !gameField[positionByX, positionByY].IsMine)
+            {
+                return false;
+            }
+
             // Take power of mine
-            byte power = Convert.ToByte(this.positions[positionByX, positionByY]);
+            byte power = Convert.ToByte(this.gameField[positionByX, positionByY]);
 
             // Explode mine with power 1
             this.Explode(positionByX, positionByY);
@@ -95,7 +64,7 @@
 
             if (power == 1)
             {
-                return;
+                return true;
             }
 
             // Explode mine with power 2... (1 + 2)
@@ -106,7 +75,7 @@
 
             if (power == 2)
             {
-                return;
+                return true;
             }
 
             // Explode mine with power 3... (1 + 2 + 3)
@@ -117,7 +86,7 @@
 
             if (power == 3)
             {
-                return;
+                return true;
             }
 
             // Explode mine with power 4... (1 + 2 + 3 + 4)
@@ -132,7 +101,7 @@
 
             if (power == 4)
             {
-                return;
+                return true;
             }
 
             // Explode mine with power 5... (1 + 2 + 3 + 4 + 5)
@@ -140,6 +109,8 @@
             this.Explode(positionByX + 2, positionByY - 2);
             this.Explode(positionByX - 2, positionByY + 2);
             this.Explode(positionByX + 2, positionByY + 2);
+
+            return true;
         }
 
         /// <summary>
@@ -150,7 +121,7 @@
         private bool CheckCoord(int coordinate)
         {
             bool result = false;
-            if (coordinate >= 0 && coordinate < fieldSize)
+            if (coordinate >= 0 && coordinate < this.gameField.FieldSize)
             {
                 result = true;
             }
@@ -167,7 +138,8 @@
         {
             if (this.CheckCoord(positionByX) && this.CheckCoord(positionByY))
             {
-                this.positions[positionByX, positionByY].IsExploded = true;
+                this.gameField[positionByX, positionByY].IsExploded = true;
+                this.detonatedMines++;
             }
         }
     }

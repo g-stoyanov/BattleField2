@@ -1,17 +1,9 @@
-﻿namespace BattleFields
+﻿namespace BattleField.Common
 {
     using System;
 
-    public class BattleField
+    class Game
     {
-        private const string ExplodedSign = " X ";
-
-        public BattleField()
-        {
-        }
-
-        
-
         public void DisplayField()
         {
             // top side numbers
@@ -51,11 +43,11 @@
             }
         }
 
-        
 
-        
 
-        
+
+
+
 
         private static void Main()
         {
@@ -101,7 +93,5 @@
             Console.WriteLine("Game Over. Detonated Mines: " + gameField.detonatedMines);
             Console.ReadKey();
         }
-
-        
     }
 }
