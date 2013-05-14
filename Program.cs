@@ -7,7 +7,7 @@
         private const string ExplodedSign = " X ";
         private static int fieldSize = 0;
         private int detonatedMines = 0;
-        private string[,] positions = new string[fieldSize, fieldSize];
+        private readonly string[,] positions = new string[fieldSize, fieldSize];
 
         public BattleField()
         {
