@@ -168,15 +168,15 @@
             this.Explode(positionByX + 2, positionByY + 2);
         }
 
-        public int PrebroiOstavashtiteMinichki()
+        public int CountRemainingMines()
         {
             int count = 0;
 
-            for (int i = 0; i < fieldSize; i++)
+            for (int row = 0; row < fieldSize; row++)
             {
-                for (int j = 0; i < fieldSize; i++)
+                for (int column = 0; column < fieldSize; column++)
                 {
-                    if ((this.positions[i, j] != ExplodedSign) && (this.positions[i, j] != " - "))
+                    if ((this.positions[row, column] != ExplodedSign) && (this.positions[row, column] != " - "))
                     {
                         count++;
                     }
@@ -192,10 +192,10 @@
             Console.WriteLine("Welcome to the Battle Field game");
             do
             {
-                Console.Write("Enter legal size of board: ");
+                Console.Write("Enter proper size of board (1-10): ");
                 tempFieldSize = Console.ReadLine();
             }
-            while ((!int.TryParse(tempFieldSize, out fieldSize)) || (fieldSize < 0) || (fieldSize > 11));
+            while ((!int.TryParse(tempFieldSize, out fieldSize)) || (fieldSize < 1) || (fieldSize > 10));
 
             BattleField gameField = new BattleField();
             gameField.InitField();
@@ -225,7 +225,7 @@
                 gameField.DisplayField();
                 gameField.detonatedMines++;
             }
-            while (gameField.PrebroiOstavashtiteMinichki() != 0);
+            while (gameField.CountRemainingMines() != 0);
 
             Console.WriteLine("Game Over. Detonated Mines: " + gameField.detonatedMines);
             Console.ReadKey();
