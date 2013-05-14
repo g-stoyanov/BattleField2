@@ -8,8 +8,8 @@
     <ProjectGuid>{1CCEAB59-D36D-423E-88D8-55D24ED29F72}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ГърмящитеБомби</RootNamespace>
-    <AssemblyName>ГърмящитеБомби</AssemblyName>
+    <RootNamespace>ExplodingMines</RootNamespace>
+    <AssemblyName>ExplodingMines</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FieldCell.cs" />
+    <Compile Include="GameField.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
