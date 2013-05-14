@@ -4,10 +4,10 @@
 
     public class BattleField
     {
-        public const string ExplodedSign = " X ";
-        public static int fieldSize = 0;
-        public int detonatedMines = 0;
-        public string[,] positions = new string[fieldSize, fieldSize];
+        private const string ExplodedSign = " X ";
+        private static int fieldSize = 0;
+        private int detonatedMines = 0;
+        private string[,] positions = new string[fieldSize, fieldSize];
 
         public BattleField()
         {
@@ -36,7 +36,7 @@
             Console.WriteLine(string.Empty);
 
             Console.Write("    ");
-            for (int i = 0; i < 4 * fieldSize - 3; i++)
+            for (int i = 0; i < (4 * fieldSize) - 3; i++)
             {
                 Console.Write("-");
             }
@@ -50,22 +50,21 @@
             {
                 // left side numbers
                 Console.Write(i.ToString() + "|");
-                
-				for (int j = 0; j < fieldSize; j++)
+
+                for (int j = 0; j < fieldSize; j++)
                 {
                     Console.Write(" " + this.positions[i, j].ToString());
                 }
 
-				for (int k = 0; k < 3; k++)
-				{
-					Console.WriteLine(string.Empty);
-				}
-
+                for (int k = 0; k < 3; k++)
+                {
+                    Console.WriteLine(string.Empty);
+                }
             }
         }
 
         public void InitMines()
-        { 
+        {
             // tuka ne sym siguren kakvo tochno pravq ama pyk raboti
             int minesDownLimit = Convert.ToInt32(0.15 * fieldSize * fieldSize);
             int minesUpperLimit = Convert.ToInt32(0.30 * fieldSize * fieldSize);
@@ -114,11 +113,11 @@
             byte power = Convert.ToByte(this.positions[positionByX, positionByY]);
 
             // Explode mine with power 1
-            Explode(positionByX, positionByY);
-            Explode(positionByX - 1, positionByY - 1);
-            Explode(positionByX - 1, positionByY + 1);
-            Explode(positionByX + 1, positionByY - 1);
-            Explode(positionByX + 1, positionByY + 1);
+            this.Explode(positionByX, positionByY);
+            this.Explode(positionByX - 1, positionByY - 1);
+            this.Explode(positionByX - 1, positionByY + 1);
+            this.Explode(positionByX + 1, positionByY - 1);
+            this.Explode(positionByX + 1, positionByY + 1);
 
             if (power == 1)
             {
@@ -126,10 +125,10 @@
             }
 
             // Explode mine with power 2... (1 + 2)
-            Explode(positionByX, positionByY - 1);
-            Explode(positionByX - 1, positionByY);
-            Explode(positionByX + 1, positionByY);
-            Explode(positionByX, positionByY + 1);
+            this.Explode(positionByX, positionByY - 1);
+            this.Explode(positionByX - 1, positionByY);
+            this.Explode(positionByX + 1, positionByY);
+            this.Explode(positionByX, positionByY + 1);
 
             if (power == 2)
             {
@@ -137,10 +136,10 @@
             }
 
             // Explode mine with power 3... (1 + 2 + 3)
-            Explode(positionByX - 2, positionByY);
-            Explode(positionByX + 2, positionByY);
-            Explode(positionByX, positionByY - 2);
-            Explode(positionByX, positionByY + 2);
+            this.Explode(positionByX - 2, positionByY);
+            this.Explode(positionByX + 2, positionByY);
+            this.Explode(positionByX, positionByY - 2);
+            this.Explode(positionByX, positionByY + 2);
 
             if (power == 3)
             {
@@ -148,14 +147,14 @@
             }
 
             // Explode mine with power 4... (1 + 2 + 3 + 4)
-            Explode(positionByX - 1, positionByY + 2);
-            Explode(positionByX + 1, positionByY + 2);
-            Explode(positionByX - 1, positionByY - 2);
-            Explode(positionByX + 1, positionByY - 2);
-            Explode(positionByX - 2, positionByY - 1);
-            Explode(positionByX - 2, positionByY + 1);
-            Explode(positionByX + 2, positionByY - 1);
-            Explode(positionByX + 2, positionByY + 1);
+            this.Explode(positionByX - 1, positionByY + 2);
+            this.Explode(positionByX + 1, positionByY + 2);
+            this.Explode(positionByX - 1, positionByY - 2);
+            this.Explode(positionByX + 1, positionByY - 2);
+            this.Explode(positionByX - 2, positionByY - 1);
+            this.Explode(positionByX - 2, positionByY + 1);
+            this.Explode(positionByX + 2, positionByY - 1);
+            this.Explode(positionByX + 2, positionByY + 1);
 
             if (power == 4)
             {
@@ -163,10 +162,10 @@
             }
 
             // Explode mine with power 5... (1 + 2 + 3 + 4 + 5)
-            Explode(positionByX - 2, positionByY - 2);
-            Explode(positionByX + 2, positionByY - 2);
-            Explode(positionByX - 2, positionByY + 2);
-            Explode(positionByX + 2, positionByY + 2);
+            this.Explode(positionByX - 2, positionByY - 2);
+            this.Explode(positionByX + 2, positionByY - 2);
+            this.Explode(positionByX - 2, positionByY + 2);
+            this.Explode(positionByX + 2, positionByY + 2);
         }
 
         public int PrebroiOstavashtiteMinichki()
@@ -187,35 +186,6 @@
             return count;
         }
 
-        /// <summary>
-        /// Checks whether the coordinate is within the field of play.
-        /// </summary>
-        /// <param name="coordinate">The coordinate.</param>
-        /// <returns>Returns a boolean value as a result of the check.</returns>
-        private bool CheckCoord(int coordinate)
-        {
-            bool result = false;
-            if (coordinate >= 0 && coordinate < fieldSize)
-            {
-                result = true;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Explodes the specified cell with given coordinates.
-        /// </summary>
-        /// <param name="positionByX">The X coordinate of the cell.</param>
-        /// <param name="positionByY">The Y coordinate of the cell.</param>
-        private void Explode(int positionByX, int positionByY)
-        {
-            if (CheckCoord(positionByX) && CheckCoord(positionByY))
-            {
-                this.positions[positionByX, positionByY] = ExplodedSign;
-            }
-        }
-
         private static void Main()
         {
             string tempFieldSize;
@@ -225,7 +195,7 @@
                 Console.Write("Enter legal size of board: ");
                 tempFieldSize = Console.ReadLine();
             }
-            while ((!Int32.TryParse(tempFieldSize, out fieldSize)) || (fieldSize < 0) || (fieldSize > 11));
+            while ((!int.TryParse(tempFieldSize, out fieldSize)) || (fieldSize < 0) || (fieldSize > 11));
 
             BattleField gameField = new BattleField();
             gameField.InitField();
@@ -259,6 +229,35 @@
 
             Console.WriteLine("Game Over. Detonated Mines: " + gameField.detonatedMines);
             Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Checks whether the coordinate is within the field of play.
+        /// </summary>
+        /// <param name="coordinate">The coordinate.</param>
+        /// <returns>Returns a boolean value as a result of the check.</returns>
+        private bool CheckCoord(int coordinate)
+        {
+            bool result = false;
+            if (coordinate >= 0 && coordinate < fieldSize)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Explodes the specified cell with given coordinates.
+        /// </summary>
+        /// <param name="positionByX">The X coordinate of the cell.</param>
+        /// <param name="positionByY">The Y coordinate of the cell.</param>
+        private void Explode(int positionByX, int positionByY)
+        {
+            if (this.CheckCoord(positionByX) && this.CheckCoord(positionByY))
+            {
+                this.positions[positionByX, positionByY] = ExplodedSign;
+            }
         }
     }
 }
