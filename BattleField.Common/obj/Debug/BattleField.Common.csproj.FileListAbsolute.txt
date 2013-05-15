@@ -1,0 +1,5 @@
+F:\SourceCode\TeamProjects\GitHub\BattleField2\BattleField.Common\bin\Debug\BattleField.Common.dll
+F:\SourceCode\TeamProjects\GitHub\BattleField2\BattleField.Common\bin\Debug\BattleField.Common.pdb
+F:\SourceCode\TeamProjects\GitHub\BattleField2\BattleField.Common\obj\Debug\BattleField.Common.csprojResolveAssemblyReference.cache
+F:\SourceCode\TeamProjects\GitHub\BattleField2\BattleField.Common\obj\Debug\BattleField.Common.dll
+F:\SourceCode\TeamProjects\GitHub\BattleField2\BattleField.Common\obj\Debug\BattleField.Common.pdb
