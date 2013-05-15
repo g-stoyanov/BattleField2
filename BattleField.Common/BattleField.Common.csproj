@@ -39,9 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleRenderer.cs" />
     <Compile Include="FieldCell.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameField.cs" />
+    <Compile Include="IRenderer.cs" />
+    <Compile Include="IUserInterface.cs" />
+    <Compile Include="KeyboardInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

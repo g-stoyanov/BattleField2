@@ -3,10 +3,30 @@
     using System;
     using System.Linq;
 
-    class GameEngine
+    public class GameEngine
     {
         private byte detonatedMines;
         private GameField gameField;
+        private IUserInterface userInterface;
+        private IRenderer renderer;
+
+        public GameEngine(IUserInterface userInterface, IRenderer renderer, GameField gameField)
+        {
+            this.userInterface = userInterface;
+            this.renderer = renderer;
+            this.gameField = gameField;
+        }
+
+        public void InitializeField()
+        {
+            for (int i = 0; i < this.gameField.FieldSize; i++)
+            {
+                for (int j = 0; j < this.gameField.FieldSize; j++)
+                {
+                    this.gameField[i, j] = new FieldCell();
+                }
+            }
+        }
 
         public void InitializeMines()
         {
@@ -17,11 +37,11 @@
             Random randomNumberGenerator = new Random();
             int minesCount = randomNumberGenerator.Next(minesDownLimit, minesUpperLimit);
 
-            bool mineNotPlaced = true;
             int tempMineXCoordinate;
             int tempMineYCoordinate;
             for (int i = 0; i < minesCount; i++)
             {
+                bool mineNotPlaced = true;
                 do
                 {
                     tempMineXCoordinate = randomNumberGenerator.Next(0, this.gameField.FieldSize - 1);
@@ -29,14 +49,17 @@
                     if (!this.gameField[tempMineXCoordinate, tempMineYCoordinate].IsMine)
                     {
                         this.gameField[tempMineXCoordinate, tempMineYCoordinate].Power = (byte)randomNumberGenerator.Next(1, 6);
-                    }
-                    else
-                    {
+                        this.gameField[tempMineXCoordinate, tempMineYCoordinate].IsMine = true;
                         mineNotPlaced = false;
-                    }
+                    }                     
                 }
                 while (mineNotPlaced);
             }
+        }
+
+        public void Render()
+        {
+            this.renderer.Render(this.gameField, this.detonatedMines);
         }
 
         /// <summary>

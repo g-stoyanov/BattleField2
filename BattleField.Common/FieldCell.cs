@@ -13,17 +13,17 @@
         private byte power;
 
         public FieldCell()
-            : this(false, false, 0)
+            : this(false, false, 1)
         {
         }
 
         public FieldCell(bool isMine)
-            : this(isMine, false, 0)
+            : this(isMine, false, 1)
         {
         }
 
         public FieldCell(bool isMine, bool isExploded)
-            : this(isMine, isExploded, 0)
+            : this(isMine, isExploded, 1)
         {
         }
 

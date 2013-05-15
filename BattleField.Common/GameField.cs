@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
 
-    class GameField
+    public class GameField
     {
         private byte fieldSize;
         private readonly FieldCell[,] gameField;
@@ -36,17 +36,6 @@
 
             private set
             {
-            }
-        }
-
-        public void InitializeField()
-        {
-            for (int i = 0; i < fieldSize; i++)
-            {
-                for (int j = 0; j < fieldSize; j++)
-                {
-                    this.gameField[i, j] = new FieldCell();
-                }
             }
         }
 
