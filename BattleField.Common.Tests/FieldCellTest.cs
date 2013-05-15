@@ -42,5 +42,14 @@ namespace BattleField.Common.Tests
             fieldCell.IsMine = true;
             fieldCell.Power = 6;
         }
+
+        [TestMethod]
+        public void TestPowerForNotMine()
+        {
+            FieldCell fieldCell = new FieldCell();
+            fieldCell.IsExploded = false;
+            fieldCell.IsMine = false;
+            Assert.AreEqual(fieldCell.Power, 0);
+        }
     }
 }
