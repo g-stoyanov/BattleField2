@@ -5,6 +5,8 @@
 
     public class GameEngine
     {
+        private string menu = "R eset, N ew, Q uit";
+        private string message = "Game over! Total detonated mines is 100!";
         private byte detonatedMines;
         private GameField gameField;
         private IUserInterface userInterface;
@@ -59,7 +61,7 @@
 
         public void Render()
         {
-            this.renderer.Render(this.gameField, this.detonatedMines);
+            this.renderer.Render(this.gameField, this.detonatedMines, menu, message);
         }
 
         /// <summary>

@@ -99,7 +99,7 @@
             }
             else
             {
-                return string.Empty;
+                return new string(' ', 1);
             }
         }
     }

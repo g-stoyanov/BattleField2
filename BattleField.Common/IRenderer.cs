@@ -2,6 +2,6 @@
 {
     public interface IRenderer
     {
-        void Render(GameField gameField, byte detonatedMines);
+        void Render(GameField gameField, byte detonatedMines, string menu, string message);
     }
 }
