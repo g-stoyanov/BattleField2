@@ -6,9 +6,9 @@
     public class GameEngine
     {
         private byte detonatedMines;
-        private GameField gameField;
-        private IUserInterface userInterface;
-        private IRenderer renderer;
+        private readonly GameField gameField;
+        private readonly IUserInterface userInterface;
+        private readonly IRenderer renderer;
 
         public GameEngine(IUserInterface userInterface, IRenderer renderer, GameField gameField)
         {
