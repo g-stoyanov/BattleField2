@@ -11,26 +11,23 @@ namespace BattleField.Common.Tests
         {
             FieldCell fieldCell = new FieldCell();
             fieldCell.IsExploded = true;
-            Assert.AreEqual(fieldCell.ToString(),"X");
+            Assert.AreEqual("X", fieldCell.ToString());
         }
 
         [TestMethod]
         public void TestToStringIsMine()
         {
             FieldCell fieldCell = new FieldCell();
-            fieldCell.IsExploded = false;
             fieldCell.IsMine = true;
             fieldCell.Power = 2;
-            Assert.AreEqual(fieldCell.ToString(), "2");
+            Assert.AreEqual("2", fieldCell.ToString());
         }
 
         [TestMethod]
         public void TestToStringEmpty()
         {
             FieldCell fieldCell = new FieldCell();
-            fieldCell.IsExploded = false;
-            fieldCell.IsMine = false;
-            Assert.AreEqual(fieldCell.ToString(), string.Empty);
+            Assert.AreEqual(new string(' ', 1), fieldCell.ToString());
         }
 
         [TestMethod]

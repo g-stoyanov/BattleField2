@@ -9,3 +9,8 @@ F:\SourceCode\TeamProjects\GitHub\BattleField2\BattleField.Main\obj\Debug\Battle
 D:\GitHub\BattleField2\BattleField.Main\bin\Debug\BattleField.Main.exe.config
 D:\GitHub\BattleField2\BattleField.Main\obj\Debug\BattleField.Main.exe
 D:\GitHub\BattleField2\BattleField.Main\obj\Debug\BattleField.Main.pdb
+D:\GitHub\BattleField2\BattleField.Main\bin\Debug\BattleField.Main.exe
+D:\GitHub\BattleField2\BattleField.Main\bin\Debug\BattleField.Main.pdb
+D:\GitHub\BattleField2\BattleField.Main\bin\Debug\BattleField.Common.dll
+D:\GitHub\BattleField2\BattleField.Main\bin\Debug\BattleField.Common.pdb
+D:\GitHub\BattleField2\BattleField.Main\obj\Debug\BattleField.Main.csprojResolveAssemblyReference.cache
