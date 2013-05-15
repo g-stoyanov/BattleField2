@@ -8,9 +8,9 @@
         private string menu = "R eset, N ew, Q uit";
         private string message = "Game over! Total detonated mines is 100!";
         private byte detonatedMines;
-        private GameField gameField;
-        private IUserInterface userInterface;
-        private IRenderer renderer;
+        private readonly GameField gameField;
+        private readonly IUserInterface userInterface;
+        private readonly IRenderer renderer;
 
         public GameEngine(IUserInterface userInterface, IRenderer renderer, GameField gameField)
         {
