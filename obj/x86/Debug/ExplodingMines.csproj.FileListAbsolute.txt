@@ -1,5 +1,0 @@
-F:\SourceCode\GitHub\BattleField2\bin\Debug\ГърмящитеБомби.exe
-F:\SourceCode\GitHub\BattleField2\bin\Debug\ГърмящитеБомби.pdb
-F:\SourceCode\GitHub\BattleField2\obj\x86\Debug\ExplodingMines.csprojResolveAssemblyReference.cache
-F:\SourceCode\GitHub\BattleField2\obj\x86\Debug\ГърмящитеБомби.exe
-F:\SourceCode\GitHub\BattleField2\obj\x86\Debug\ГърмящитеБомби.pdb
