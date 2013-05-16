@@ -63,6 +63,32 @@
             }
         }
 
+        public int GetRemainingMines()
+        {
+            int countMines = 0;
+            for (int row = 0; row < gameField.FieldSize; row++)
+            {
+                for (int col = 0; col < gameField.FieldSize; col++)
+                {
+                    if (gameField[row, col].IsMine && !gameField[row, col].IsExploded)
+                    {
+                        countMines++;
+                    }
+                }
+            }
+
+            if (countMines == 0)
+            {
+                this.message = string.Format("Game over your points is {0}", detonatedMines);
+            }
+            else
+            {
+                this.message = string.Format("Remaining mines {0}", countMines);
+            }
+
+            return countMines;
+        }
+
         public void Render()
         {
             this.renderer.Render(this.gameField, this.detonatedMines, this.menu, this.message);
@@ -70,6 +96,13 @@
 
         public char GetCommand()
         {
+            if (GetRemainingMines() == 0)
+            {
+                this.message = string.Format("Game over your points is {0}", detonatedMines);
+
+                return 'D';
+            }
+
             this.userInterface.GetCommand(out this.xCoordinate, out this.yCoordinate, out this.command);
             if (this.command == '0' && this.xCoordinate == -1 && this.yCoordinate == -1)
             {
@@ -107,7 +140,7 @@
         /// <param name="this.yCoordinate">The Y coordinate of mine field.</param>
         public bool DetonateMine()
         {
-            if (this.CheckCoord(this.xCoordinate) && this.CheckCoord(this.yCoordinate) && !gameField[this.xCoordinate, this.yCoordinate].IsMine)
+            if ((this.CheckCoord(this.xCoordinate) && this.CheckCoord(this.yCoordinate) && !gameField[this.xCoordinate, this.yCoordinate].IsMine) || gameField[this.xCoordinate, this.yCoordinate].IsExploded)
             {
                 return false;
             }
