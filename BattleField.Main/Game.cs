@@ -5,7 +5,8 @@
     public class Game
     {
         private static void Main()
-        {        
+        {
+            bool exit = false;
             byte fieldSize;
             string tempFieldSize;
             Console.WriteLine("Welcome to the Battle Field game");
@@ -22,36 +23,46 @@
             GameEngine gameEngine = new GameEngine(userInterface, renderer, gameField);
 
             gameEngine.InitializeField();
-            gameEngine.InitializeMines();           
-            gameEngine.Render();
+            gameEngine.InitializeMines();
 
-            string coordinates;
-            int positionByX, positionByY;
+            while (true)
+            {
+                gameEngine.Render();
+                char command = gameEngine.GetCommand();
 
-            //do
-            //{
-            //    do
-            //    {
-            //        Console.Write("Enter coordinates: ");
-            //        coordinates = Console.ReadLine();
-            //        positionByX = Convert.ToInt32(coordinates.Substring(0, 1));
-            //        positionByY = Convert.ToInt32(coordinates.Substring(2));
+                switch (command)
+                {
+                    case 'D':
+                        {
+                            gameEngine.DetonateMine();
+                        }
+                        break;
 
-            //        if ((positionByX < 0) || (positionByY > fieldSize - 1) || (gameField.positions[positionByX, positionByY] == " - "))
-            //        {
-            //            Console.WriteLine("Invalid Move");
-            //        }
-            //    }
-            //    while ((positionByX < 0) || (positionByY > fieldSize - 1) || (gameField.positions[positionByX, positionByY] == " - "));
+                    case 'R':
+                        {
+                            gameEngine.InitializeField();
+                            gameEngine.InitializeMines();
+                        }
+                        break;
 
-            //    gameField.DetonateMine(positionByX, positionByY);
-            //    gameField.DisplayField();
-            //    gameField.detonatedMines++;
-            //}
-            //while (gameField.CountRemainingMines() != 0);
+                    case 'Q':
+                        {
+                            exit = true;
+                        }
+                        break;
 
-            //Console.WriteLine("Game Over. Detonated Mines: " + gameField.detonatedMines);
-            //Console.ReadKey();
+                    case 'N':
+                        {
+                            Main();
+                        }
+                        break;
+                }
+
+                if (exit)
+                {
+                    break;
+                }
+            }
         }
     }
 }

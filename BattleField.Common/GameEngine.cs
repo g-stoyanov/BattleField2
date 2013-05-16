@@ -5,9 +5,12 @@
 
     public class GameEngine
     {
+        private int xCoordinate = -1;
+        private int yCoordinate = -1;
+        private char command = '0';
+        private string message = string.Empty;
         private string menu = "R eset, N ew, Q uit";
-        private string message = "Game over! Total detonated mines is 100!";
-        private byte detonatedMines;
+        private byte detonatedMines = 0;
         private readonly GameField gameField;
         private readonly IUserInterface userInterface;
         private readonly IRenderer renderer;
@@ -21,6 +24,7 @@
 
         public void InitializeField()
         {
+            detonatedMines = 0;
             for (int i = 0; i < this.gameField.FieldSize; i++)
             {
                 for (int j = 0; j < this.gameField.FieldSize; j++)
@@ -61,31 +65,64 @@
 
         public void Render()
         {
-            this.renderer.Render(this.gameField, this.detonatedMines, menu, message);
+            this.renderer.Render(this.gameField, this.detonatedMines, this.menu, this.message);
+        }
+
+        public char GetCommand()
+        {
+            this.userInterface.GetCommand(out this.xCoordinate, out this.yCoordinate, out this.command);
+            if (this.command == '0' && this.xCoordinate == -1 && this.yCoordinate == -1)
+            {
+                this.message = "Invalid Command!";
+            }
+            else if (this.command != '0')
+            {
+                this.message = string.Empty;
+            }
+            else if (!this.gameField[this.xCoordinate, this.yCoordinate].IsMine)
+            {
+                this.message = string.Format("Cell {0} - {1} is not mine!", this.xCoordinate, this.yCoordinate);
+            }
+            else if (this.gameField[this.xCoordinate, this.yCoordinate].IsExploded)
+            {
+                this.message = string.Format("Cell {0} - {1} is already exploded!", this.xCoordinate, this.yCoordinate);
+            }
+            else if (
+                this.xCoordinate > -1 &&
+                this.xCoordinate < this.gameField.FieldSize &&
+                this.yCoordinate > -1 &&
+                this.yCoordinate < this.gameField.FieldSize)
+            {
+                return 'D';
+            }
+
+            return this.command;
         }
 
         /// <summary>
         /// Detonates the mine.
         /// Method for detonate selected field with corresponding mine power.
         /// </summary>
-        /// <param name="positionByX">The X coordinate of mine field.</param>
-        /// <param name="positionByY">The Y coordinate of mine field.</param>
-        public bool DetonateMine(int positionByX, int positionByY)
+        /// <param name="this.xCoordinate">The X coordinate of mine field.</param>
+        /// <param name="this.yCoordinate">The Y coordinate of mine field.</param>
+        public bool DetonateMine()
         {
-            if (this.CheckCoord(positionByX) && this.CheckCoord(positionByY) && !gameField[positionByX, positionByY].IsMine)
+            if (this.CheckCoord(this.xCoordinate) && this.CheckCoord(this.yCoordinate) && !gameField[this.xCoordinate, this.yCoordinate].IsMine)
             {
                 return false;
             }
 
+            this.detonatedMines++;
+
             // Take power of mine
-            byte power = Convert.ToByte(this.gameField[positionByX, positionByY]);
+            byte power = this.gameField[this.xCoordinate, this.yCoordinate].Power;
 
             // Explode mine with power 1
-            this.Explode(positionByX, positionByY);
-            this.Explode(positionByX - 1, positionByY - 1);
-            this.Explode(positionByX - 1, positionByY + 1);
-            this.Explode(positionByX + 1, positionByY - 1);
-            this.Explode(positionByX + 1, positionByY + 1);
+            this.Explode(this.xCoordinate, this.yCoordinate);
+            this.Explode(this.xCoordinate - 1, this.yCoordinate - 1);
+            this.Explode(this.xCoordinate - 1, this.yCoordinate + 1);
+            this.Explode(this.xCoordinate + 1, this.yCoordinate - 1);
+            this.Explode(this.xCoordinate + 1, this.yCoordinate + 1);
 
             if (power == 1)
             {
@@ -93,10 +130,10 @@
             }
 
             // Explode mine with power 2... (1 + 2)
-            this.Explode(positionByX, positionByY - 1);
-            this.Explode(positionByX - 1, positionByY);
-            this.Explode(positionByX + 1, positionByY);
-            this.Explode(positionByX, positionByY + 1);
+            this.Explode(this.xCoordinate, this.yCoordinate - 1);
+            this.Explode(this.xCoordinate - 1, this.yCoordinate);
+            this.Explode(this.xCoordinate + 1, this.yCoordinate);
+            this.Explode(this.xCoordinate, this.yCoordinate + 1);
 
             if (power == 2)
             {
@@ -104,10 +141,10 @@
             }
 
             // Explode mine with power 3... (1 + 2 + 3)
-            this.Explode(positionByX - 2, positionByY);
-            this.Explode(positionByX + 2, positionByY);
-            this.Explode(positionByX, positionByY - 2);
-            this.Explode(positionByX, positionByY + 2);
+            this.Explode(this.xCoordinate - 2, this.yCoordinate);
+            this.Explode(this.xCoordinate + 2, this.yCoordinate);
+            this.Explode(this.xCoordinate, this.yCoordinate - 2);
+            this.Explode(this.xCoordinate, this.yCoordinate + 2);
 
             if (power == 3)
             {
@@ -115,14 +152,14 @@
             }
 
             // Explode mine with power 4... (1 + 2 + 3 + 4)
-            this.Explode(positionByX - 1, positionByY + 2);
-            this.Explode(positionByX + 1, positionByY + 2);
-            this.Explode(positionByX - 1, positionByY - 2);
-            this.Explode(positionByX + 1, positionByY - 2);
-            this.Explode(positionByX - 2, positionByY - 1);
-            this.Explode(positionByX - 2, positionByY + 1);
-            this.Explode(positionByX + 2, positionByY - 1);
-            this.Explode(positionByX + 2, positionByY + 1);
+            this.Explode(this.xCoordinate - 1, this.yCoordinate + 2);
+            this.Explode(this.xCoordinate + 1, this.yCoordinate + 2);
+            this.Explode(this.xCoordinate - 1, this.yCoordinate - 2);
+            this.Explode(this.xCoordinate + 1, this.yCoordinate - 2);
+            this.Explode(this.xCoordinate - 2, this.yCoordinate - 1);
+            this.Explode(this.xCoordinate - 2, this.yCoordinate + 1);
+            this.Explode(this.xCoordinate + 2, this.yCoordinate - 1);
+            this.Explode(this.xCoordinate + 2, this.yCoordinate + 1);
 
             if (power == 4)
             {
@@ -130,10 +167,10 @@
             }
 
             // Explode mine with power 5... (1 + 2 + 3 + 4 + 5)
-            this.Explode(positionByX - 2, positionByY - 2);
-            this.Explode(positionByX + 2, positionByY - 2);
-            this.Explode(positionByX - 2, positionByY + 2);
-            this.Explode(positionByX + 2, positionByY + 2);
+            this.Explode(this.xCoordinate - 2, this.yCoordinate - 2);
+            this.Explode(this.xCoordinate + 2, this.yCoordinate - 2);
+            this.Explode(this.xCoordinate - 2, this.yCoordinate + 2);
+            this.Explode(this.xCoordinate + 2, this.yCoordinate + 2);
 
             return true;
         }
@@ -157,14 +194,13 @@
         /// <summary>
         /// Explodes the specified cell with given coordinates.
         /// </summary>
-        /// <param name="positionByX">The X coordinate of the cell.</param>
-        /// <param name="positionByY">The Y coordinate of the cell.</param>
-        private void Explode(int positionByX, int positionByY)
+        /// <param name="this.xCoordinate">The X coordinate of the cell.</param>
+        /// <param name="this.yCoordinate">The Y coordinate of the cell.</param>
+        private void Explode(int xCoordinate, int yCoordinate)
         {
-            if (this.CheckCoord(positionByX) && this.CheckCoord(positionByY))
+            if (this.CheckCoord(xCoordinate) && this.CheckCoord(yCoordinate))
             {
-                this.gameField[positionByX, positionByY].IsExploded = true;
-                this.detonatedMines++;
+                this.gameField[xCoordinate, yCoordinate].IsExploded = true;
             }
         }
     }
