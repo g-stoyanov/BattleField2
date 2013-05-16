@@ -5,7 +5,7 @@
 
     public class GameField
     {
-        private byte fieldSize;
+        private readonly byte fieldSize;
         private readonly FieldCell[,] gameField;
 
         public GameField(byte fieldSize)
