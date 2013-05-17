@@ -18,7 +18,6 @@ namespace BattleField.Common.Tests
             string menu = "R eset, N ew, Q uit";
             byte detonatedMines = 0;
             string expected = gameEngine.Render();
-            expected = expected + expected;
             string actual = renderer.Render(gameField, detonatedMines, menu, message);
 
             Assert.AreEqual(expected, actual);

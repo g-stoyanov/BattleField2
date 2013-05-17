@@ -8,9 +8,9 @@
         // Please I want to code this class!!! I have some ideas to implement here!!!
         // Joro, 10x
 
-        StringBuilder strB = new StringBuilder();
         public string Render(GameField gameField, byte detonatedMines, string menu, string message)
         {
+            StringBuilder strB = new StringBuilder();
             Console.Title = string.Format("Battle Field Game - field size: {0}", gameField.FieldSize);
             Console.WindowHeight = 35;
             Console.WindowWidth = 60;
@@ -133,7 +133,7 @@
             strB.AppendLine(string.Format("\nGame message: {0}", message));
             strB.Append("\nPlease input command: ");
 
-            //Console.Write(strB.ToString());
+            Console.Write(strB.ToString());
             return strB.ToString();
         }
     }
