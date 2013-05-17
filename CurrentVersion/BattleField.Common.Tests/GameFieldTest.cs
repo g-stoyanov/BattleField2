@@ -25,5 +25,17 @@ namespace BattleField.Common.Tests
             gameEngine.InitializeField();
             Assert.IsTrue(gameField.CountRemainingMines() == 0);
         }
+
+        [TestMethod]
+        public void TestFieldCellIndexator()
+        {
+            IUserInterface userInterface = new KeyboardInterface();
+            IRenderer renderer = new ConsoleRenderer();
+            GameField gameField = new GameField(3);
+            GameEngine gameEngine = new GameEngine(userInterface, renderer, gameField);
+            gameEngine.InitializeField();
+            FieldCell fieldCell = new FieldCell();
+            Assert.AreEqual(gameField[0, 0].ToString(), fieldCell.ToString());
+        }
     }
 }

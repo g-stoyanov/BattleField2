@@ -89,9 +89,9 @@
             return countMines;
         }
 
-        public void Render()
+        public string Render()
         {
-            this.renderer.Render(this.gameField, this.detonatedMines, this.menu, this.message);
+            return this.renderer.Render(this.gameField, this.detonatedMines, this.menu, this.message);
         }
 
         public char GetCommand()
